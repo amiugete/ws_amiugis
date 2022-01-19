@@ -31,7 +31,7 @@ if(!$conn) {
     die('Connessione fallita !<br />');
 } else {
 	//$idcivico=$_GET["id"];
-	$query="SELECT 'https://amiugis.amiu.genova.it/mappe/lizmap/www/index.php/view/map/' as url, al.repo as repository, al.qgis_project as project,
+	$query="SELECT 'https://amiugis.amiu.genova.it/dwh/lizmap/www/index.php/view/map/' as url, al.repo as repository, al.qgis_project as project,
 	 replace(replace(replace(st_extent(st_transform(g.geoloc,3857))::text,'BOX(',''),')',''),' ',',') as bbox, 'EPSG:3857' as crs,
 	 concat(al.layername,':+\"".$livello."\"+ILIKE+''', g.descrizione, '''+') as filter 
 	 from ".$tl." g,
