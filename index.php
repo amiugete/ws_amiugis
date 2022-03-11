@@ -24,6 +24,7 @@
         <ul>    
             <li> consentire un agevole accesso alle mappe da parte del portale servizi.</li>
             <li> geoservizi WMS e WFS</li>
+            <li> interazione con IDEA BS </li>
         </ul>
     
     </div>
@@ -208,6 +209,7 @@ Il WS risponde con un json con url e parametri da usare per creare l’url con c
           <br> <strong>Endpoint WS</strong>: <a target="mappe" href="https://amiugis.amiu.genova.it/ws_amiugis/point2area.php"> 
               https://amiugis.amiu.genova.it/ws_amiugis/point2area.php
             </a>
+          <br> <strong>Metodo</strong>: <i>GET</i>
           <br> <strong>Parametri</strong>:
           <ul>
           <li> lat: latitudine del punto espressa in gradi decimali (es.44.536653)</li> 
@@ -220,7 +222,7 @@ Il WS risponde con un json con url e parametri da usare per creare l’url con c
         <li>zona (confine AMIU)</li>
         <li>UT (confine AMIU)</li>
         <li>municipio (confine amministrativo)</li>
-        <li>quartiere (per fuori Genova corrisponde al Comune e si tratta di un confine amministrativo)</li>
+        <li>quartiere (si tratta di un confine amministrativo, per i comuni fuori Genova corrisponde al Comune)</li>
       
        
           
