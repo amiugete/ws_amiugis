@@ -13,26 +13,52 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
+    <!-- Bootstrap icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"
+    />
+
+    <!-- PRISMJS -->
+    <link rel="stylesheet" href="./vendor/prism.css"/>
+
+    
     <title>Pagine indice webservice</title>
   </head>
   <body>
   <div class="container">
-    <h1>WS AMIU GIS</h1>
-    <div id='Intro'>
-        Da questa pagina si accede ad una serie di WebService creati dal gruppo GETE (Gestione Telecomunicazioni e Territorio) di AMIU 
-        (Direzione Sistemi Informativi) per vari scopi:
+    <h1 id='intro'>WS AMIU GIS</h1><hr>
+    <h3>Indice API</h3>
+        Da questa pagina si accede ad una serie di WebService creati dal gruppo SIGT (<i>Sistemi informativi e Gestione Telecomunicazioni</i>) di AMIU 
+        per vari scopi:
         <ul>    
-            <li> consentire un agevole accesso alle mappe da parte del portale servizi.</li>
-            <li> geoservizi WMS e WFS</li>
-            <li> interazione con IDEA BS </li>
+            <li> consentire un agevole accesso alle mappe da parte del portale servizi 
+            <a href="#servizi" class="btn btn-info"><i class="bi bi-link"></i> </a>
+            </li>
+            <li> Recupero access token 
+            <a href="#token" class="btn btn-info"><i class="bi bi-link"></i> </a>
+            </li>
+            <li> Interazione con IDEA BS (prevedono utente e password, che abilita un access token co durata limitata nel tempo)
+            <a href="#idea" class="btn btn-info"><i class="bi bi-link"></i> </a>
+            </li>
+            <li> geoservizi WMS e WFS 
+            <a href="#wms_wfs" class="btn btn-info btn-sm"><i class="bi bi-link"></i> </a>
+          </li>
+            <li> altro 
+            <a href="#altro" class="btn btn-info btn-sm"><i class="bi bi-link"></i> </a>
+            </li>
         </ul>
     
-    </div>
+
 
     <p>
 
 
-    <h3>Accesso alle mappe per il portale servizi.</h3>
+  <hr><br>
+
+
+    <!-- PORTALE SERVIZI -->
+    <h3 id="servizi">Accesso alle mappe per il portale servizi.</h3>
     (attivi solo su rete interna per creare mappe pubbliche)
     <div class="accordion" id="accordionExample">
           
@@ -78,13 +104,14 @@
           <br> <strong>Endpoint WS</strong>: <a target="mappe" href="https://amiugis.amiu.genova.it/ws_amiugis/layer_filter.php"> 
               https://amiugis.amiu.genova.it/ws_amiugis/layer_filter.php
             </a>
+          <br> <strong>Metodo: GET </strong>
           <br> <strong>Parametri</strong>:
           <ul>
-          <li>t: titolo della mappa. Attualmente esiste solo la mappa delle piazzole (piazzole) ma ne saranno progressivamente create altre.</li> 
+          <li>t: titolo della mappa. (vedi WS precedente).</li> 
           <li> l: livello del filtro. Esistono attualmente 3 livelli:</li>
             <ul>    
                 <li> ambito</li>
-                <li>comune</li>
+                <li> comune</li>
                 <li> municipio</li>
             </ul>
             <li> n: nome da usare nel filtro</li>
@@ -106,9 +133,140 @@
   </div>
 
 
-<br><hr><br>
+<br>
+<a href="#intro" class="btn btn-info"> Torna all'indice </a>
+<hr>
+<br>
 
-  <h3>Geoservizi WMS e WFS.</h3> (attivi su rete interna e per specifici indirizzi IP)
+
+
+<!-- TOKEN -->
+<h3 id="token">Interazione con IDEA.</h3>
+    (attivi solo su rete interna o da specifici indirizzi IP)
+    <div class="accordion" id="accordionToken">
+          
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" 
+          aria-controls="collapseOneToken">
+          WS pr recuperare il TOKEN di autenticazione
+          </button>
+        </h2>
+          <div id="collapseOneToken" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Il Webservice risponde con il TOKEN da usare per le API che lo richiedano
+        
+          <br> <strong>Endpoint WS</strong>: <a target="mappe" href="https://amiugis.amiu.genova.it/ws_amiugis/layer_filter.php"> 
+              https://amiugis.amiu.genova.it/ws_amiugis/create_token.php
+            </a>
+          <br> <strong>Metodo: POST </strong>
+          <br> <strong>Parametri</strong>:
+          <ul>
+          <li> user: nome utente</li> 
+          <li> pwd: password</li>
+          </ul>
+          Il WS risponde con un json con lo user token
+          <hr>
+          <h5>ESEMPIO:</h5>
+
+          <pre class="data-line data-language">
+            <code class="language-bash">
+curl -d "user=xxxxxx&pwd=yyyyyy" -X POST http://amiugis.amiu.genova.it/ws_amiugis/create_token.php
+            </code>
+          </pre>
+
+          
+            </div>
+            
+                
+        
+            </div>
+          </div>
+      </div>
+
+
+
+  
+
+
+<br>
+<a href="#intro" class="btn btn-info"> Torna all'indice </a>
+<hr>
+<br>
+
+
+
+<!-- IDEA -->
+<h3 id="idea">Interazione con IDEA.</h3>
+    (attivi solo su rete interna o da specifici indirizzi IP)
+    <div class="accordion" id="accordionIdea">
+          
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" 
+          aria-controls="collapseOneIdea">
+          WS con utenze TARI
+          </button>
+        </h2>
+          <div id="collapseOneIdea" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Il Webservice, ancora non completamente funzionante, risponde con le utenze TARI filtrate sulla base dei parametri 
+            (opzionali) che gli passa l'utente. Il massimo numero di utenze passate ad ogni richiesta è di 1000 utenze e 
+            si può specificare il parametro <i>row_start</i> per visualizzare progressivamente tutte le utenze. 
+        
+          <br> <strong>Endpoint WS</strong>: <a target="mappe" href="https://amiugis.amiu.genova.it/ws_amiugis/layer_filter.php"> 
+              https://amiugis.amiu.genova.it/ws_amiugis/utenze_tari.php
+            </a>
+          <br> <strong>Autenticazione: Bearer <TOKEN> </strong>
+          <br> <strong>Metodo: POST </strong>
+          <br> <strong>Parametri</strong>:
+          <ul>
+          <li> tipo: [<b>UD</b>:Utenze Domestiche / <b>UND</b> titolo della mappa].</li>
+          <li> row_start: valore numerico (intero).</li> 
+          <!--li> l: livello del filtro. Esistono attualmente 3 livelli:</li-->
+          </ul>
+          Il WS risponde con un json con le utenze (domestiche e non domestiche). 
+          <br> <b>NB: Il tracciato del JSON è diverso in funzione del tipo di utenza.</b>
+          
+          
+          <hr>
+          <h5>ESEMPIO:</h5>
+
+          <pre class="data-line data-language">
+            <code class="language-bash">
+curl --header "Authorization: Bearer XXXXXXXXXXXXXX" -d 'tipo=UND&row_start=10000' http://amiugis.amiu.genova.it/ws_amiugis/utenze_tari.php
+            </code>
+          </pre>
+
+
+            </div>
+            
+                
+        
+            </div>
+          </div>
+      </div>
+
+
+
+
+
+
+
+
+<br>
+<a href="#intro" class="btn btn-info"> Torna all'indice </a>
+<hr>
+<br>
+
+
+
+
+
+
+
+
+  <h3 id="wms_wfs">Geoservizi WMS e WFS.</h3> (attivi su rete interna e per specifici indirizzi IP)
     <div class="accordion" id="accordionExamplebis">
   <div class="accordion-item">
     <h2 class="accordion-header" id="headingOne">
@@ -192,9 +350,16 @@ Il WS risponde con un json con url e parametri da usare per creare l’url con c
   </div> <!-- Fine accordion!-->
 
 
-  <br><hr><br>
+  <br>
+<a href="#intro" class="btn btn-info"> Torna all'indice </a>
+<hr>
+<br>
 
-<h3>Altro</h3> (attivi su rete interna e per specifici indirizzi IP)
+
+
+
+
+<h3 id="altro">Altro</h3> (attivi su rete interna e per specifici indirizzi IP)
   <div class="accordion" id="accordionExampletris">
 <div class="accordion-item">
   <h2 class="accordion-header" id="headingOne">
@@ -232,7 +397,10 @@ Il WS risponde con un json con url e parametri da usare per creare l’url con c
 </div>
 
 
-
+<br>
+<a href="#intro" class="btn btn-info"> Torna all'indice </a>
+<hr>
+<br>
 
 </div> <!-- Fine accordion!-->
 
@@ -255,7 +423,14 @@ Il WS risponde con un json con url e parametri da usare per creare l’url con c
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
     -->
-    </div>  
+
+
+    <script src="./vendor/prism.js"></script>
+
+
+  </div>  
+
+
 </body>
 
 <div class="b-example-divider"></div>

@@ -67,6 +67,9 @@ GRANT ALL ON TABLE geo.api_layers TO api;
 
 Il DB viene usato per l'autenticazione degli utenti per tutti i WS ad accesso profilato
 
+
+## File coon.php
+
 Esiste un file di configurazione (conn.php) che gestisce la connessione ai vari DB avente il seguente formato ed escluso per ovvie ragioni dal repository:
 
 ```
@@ -81,3 +84,15 @@ if (!$conn_api) {
 }
 ?>
 ```
+
+
+## Codice embedded 
+
+Si usa la libreria prism che è stata scaricata con un po' di impostazioni
+
+https://prismjs.com/download.html#themes=prism-dark
+
+
+curl -d "user=rmarzocchi&pwd=robbo@1984" -X POST http://localhost/ws_amiugis/create_token.php
+
+

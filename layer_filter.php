@@ -22,6 +22,8 @@ if ($livello == 'ambito'){
     //$field= 'nome_municipio';
     $tl = 'geo.municipi_area';
     $field= 'descrizione';
+} else {
+	die("ERROR: Livello non ammesso");
 }
 
 //echo $tl."<br>";
@@ -35,7 +37,7 @@ if(!$conn) {
 	 replace(replace(replace(st_extent(st_transform(g.geoloc,3857))::text,'BOX(',''),')',''),' ',',') as bbox, 'EPSG:3857' as crs,
 	 concat(al.layername,':+\"".$livello."\"+ILIKE+''', g.descrizione, '''+') as filter 
 	 from ".$tl." g,
-	 geo.api_layers al 
+	 etl.api_layers al 
 	 where al.title = $1 and g.descrizione ilike $2 
 	 group by g.descrizione, al.repo, al.qgis_project, al.layername;";
     
