@@ -38,7 +38,7 @@
             <li> Recupero access token 
             <a href="#token" class="btn btn-info"><i class="bi bi-link"></i> </a>
             </li>
-            <li> Interazione con IDEA BS (prevedono utente e password, che abilita un access token co durata limitata nel tempo)
+            <li> Interazione con IDEA BS (prevedono utente e password, che abilita un access token con durata limitata nel tempo)
             <a href="#idea" class="btn btn-info"><i class="bi bi-link"></i> </a>
             </li>
             <li> geoservizi WMS e WFS 
@@ -141,22 +141,22 @@
 
 
 <!-- TOKEN -->
-<h3 id="token">Interazione con IDEA.</h3>
+<h3 id="token">Recupero access token</h3>
     (attivi solo su rete interna o da specifici indirizzi IP)
     <div class="accordion" id="accordionToken">
           
       <div class="accordion-item">
-        <h2 class="accordion-header" id="headingOne">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" 
+        <h2 class="accordion-header" id="h_token">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOneToken" aria-expanded="false" 
           aria-controls="collapseOneToken">
           WS pr recuperare il TOKEN di autenticazione
           </button>
         </h2>
-          <div id="collapseOneToken" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+          <div id="collapseOneToken" class="accordion-collapse collapse show" aria-labelledby="h_token" data-bs-parent="#accordionExample">
           <div class="accordion-body">
             Il Webservice risponde con il TOKEN da usare per le API che lo richiedano
         
-          <br> <strong>Endpoint WS</strong>: <a target="mappe" href="https://amiugis.amiu.genova.it/ws_amiugis/layer_filter.php"> 
+          <br> <strong>Endpoint WS</strong>: <a target="mappe" href="https://amiugis.amiu.genova.it/ws_amiugis/create_token.php"> 
               https://amiugis.amiu.genova.it/ws_amiugis/create_token.php
             </a>
           <br> <strong>Metodo: POST </strong>
@@ -182,42 +182,35 @@ curl -d "user=xxxxxx&pwd=yyyyyy" -X POST http://amiugis.amiu.genova.it/ws_amiugi
         
             </div>
           </div>
-      </div>
+            <!-- FINE TOKEN -->    
+            </div>
 
-
-
-  
-
-
-<br>
+            <br>
 <a href="#intro" class="btn btn-info"> Torna all'indice </a>
 <hr>
 <br>
-
-
-
-<!-- IDEA -->
-<h3 id="idea">Interazione con IDEA.</h3>
+<!-- IDEA --> 
+  <h3 id="idea">Interazione con IDEA.</h3>
     (attivi solo su rete interna o da specifici indirizzi IP)
-    <div class="accordion" id="accordionIdea">
+    <div class="accordion" id="accordionToken">
           
       <div class="accordion-item">
-        <h2 class="accordion-header" id="headingOne">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" 
-          aria-controls="collapseOneIdea">
-          WS con utenze TARI
+        <h2 class="accordion-header" id="h_tari">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOneTari" aria-expanded="false" 
+          aria-controls="collapseOneTari">
+          WS con utenze TARI (richiede access token)
           </button>
         </h2>
-          <div id="collapseOneIdea" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+          <div id="collapseOneTari" class="accordion-collapse collapse show" aria-labelledby="h_tari" data-bs-parent="#accordionExample">
           <div class="accordion-body">
-            Il Webservice, ancora non completamente funzionante, risponde con le utenze TARI filtrate sulla base dei parametri 
+            Il Webservice risponde con le utenze TARI  (formato JSON) filtrate sulla base dei parametri 
             (opzionali) che gli passa l'utente. Il massimo numero di utenze passate ad ogni richiesta è di 1000 utenze e 
             si può specificare il parametro <i>row_start</i> per visualizzare progressivamente tutte le utenze. 
         
-          <br> <strong>Endpoint WS</strong>: <a target="mappe" href="https://amiugis.amiu.genova.it/ws_amiugis/layer_filter.php"> 
+          <br> <strong>Endpoint WS</strong>: <a target="mappe" href="https://amiugis.amiu.genova.it/ws_amiugis/utenze_tari.php"> 
               https://amiugis.amiu.genova.it/ws_amiugis/utenze_tari.php
             </a>
-          <br> <strong>Autenticazione: Bearer <TOKEN> </strong>
+          <br> <strong>Autenticazione: Bearer &lt;TOKEN&gt; </strong>
           <br> <strong>Metodo: POST </strong>
           <br> <strong>Parametri</strong>:
           <ul>
@@ -225,8 +218,6 @@ curl -d "user=xxxxxx&pwd=yyyyyy" -X POST http://amiugis.amiu.genova.it/ws_amiugi
           <li> row_start: valore numerico (intero).</li> 
           <!--li> l: livello del filtro. Esistono attualmente 3 livelli:</li-->
           </ul>
-          Il WS risponde con un json con le utenze (domestiche e non domestiche). 
-          <br> <b>NB: Il tracciato del JSON è diverso in funzione del tipo di utenza.</b>
           
           
           <hr>
@@ -245,6 +236,160 @@ curl --header "Authorization: Bearer XXXXXXXXXXXXXX" -d 'tipo=UND&row_start=1000
         
             </div>
           </div>
+
+
+
+          <div class="accordion-item">
+        <h2 class="accordion-header" id="ep">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne_ep_tree" aria-expanded="false" 
+          aria-controls="collapseOne_ep_tree">
+          Elenco dei percorsi bilaterali ad albero
+          </button>
+        </h2>
+          <div id="collapseOne_ep_tree" class="accordion-collapse collapse show" aria-labelledby="ep" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Il Webservice risponde con l'elenco dei percorsi bilaterali (formato JSON)
+        
+          <br> <strong>Endpoint WS</strong>: <a target="mappe" href="https://amiugis.amiu.genova.it/ws_amiugis/elenco_percorsi_bilaterali_tree.php"> 
+              https://amiugis.amiu.genova.it/ws_amiugis/elenco_percorsi_bilaterali_tree.php
+            </a>
+
+            <br><br>Il WS risponde con un json con il seguente formato:
+          <ul>
+            <li> id_area: </li>
+            <li> descrizione : </li>
+            <li> id_padre: livello precedente</li>
+          </ul> 
+          <br> Il 
+          <!--br><hr><br>     
+          All'ultimo livello il campo <b>descrizione</b> è così definita: <br><br>
+          id_percorso;descrizione_percorso (cod. cod_percorso)<br><br>
+
+          <b>id_percorso</b> va poi usato come input (<b>id</b>) per vedere i dettagli del singolo percorso (vedi <a target="mappe" href="https://amiugis.amiu.genova.it/ws_amiugis/dettagli_percorso.php"> 
+              https://amiugis.amiu.genova.it/ws_amiugis/dettagli_percorso.php
+            </a>) <br-->
+          <hr>
+          <h5>ESEMPIO:</h5>
+
+          <pre class="data-line data-language">
+            <code class="language-bash">
+curl http://amiugis.amiu.genova.it/ws_amiugis/elenco_percorsi_bilaterali_tree.php
+            </code>
+          </pre>
+
+
+            </div>
+            
+                
+        
+            </div>
+          </div>
+
+
+
+          <div class="accordion-item">
+        <h2 class="accordion-header" id="ep">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne_ep" aria-expanded="false" 
+          aria-controls="collapseOne_ep">
+          Elenco dei percorsi bilaterali
+          </button>
+        </h2>
+          <div id="collapseOne_ep" class="accordion-collapse collapse show" aria-labelledby="ep" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Il Webservice risponde con l'elenco dei percorsi bilaterali (formato JSON)
+        
+          <br> <strong>Endpoint WS</strong>: <a target="mappe" href="https://amiugis.amiu.genova.it/ws_amiugis/elenco_percorsi_bilaterali.php"> 
+              https://amiugis.amiu.genova.it/ws_amiugis/elenco_percorsi_bilaterali.php
+            </a>
+
+            <br><br>Il WS risponde con un json con l'elenco dei percorsi con i seguenti attributi:
+          <ul>
+            <li> id_padre: livello padre(vedi WS precedente) </li>
+            <li> ut responsabile : rimessa di partenza (è implicito da id_padre)</li>
+            <li> id_tipo_rifiuto: descrizione del servizio (è implicito da id_padre)</li>
+            <li> tipi_rifiuto: descrizione del servizio (è implicito da id_padre)</li>
+            <li> desc_turno: distinzione fra turno  [A: antimeridiano, P: Pomeridiano, N: Notturno, F: Festivo, etc] (è implicito da id_padre)</li>
+            <li> id_percorso: da usare per recuperare i dati del percorso ma da tenere nascosto agli autisti </li>
+            <li> cod_percorso : codice percorso, insieme alla descrizione del percorso deve essere usato per consentire la scelta all'autista</li>
+            <li> descrizione: descrizione del percorso </li>
+            <li> frequenza: giorni in cui è previsto il percorso (può essere messo tra parentesi oltre alla descrizione quale ulteriore supporto alla scelta del percorso) </li>
+          </ul> 
+                    
+          
+          <hr>
+          <h5>ESEMPIO:</h5>
+
+          <pre class="data-line data-language">
+            <code class="language-bash">
+curl http://amiugis.amiu.genova.it/ws_amiugis/elenco_percorsi_bilaterali.php
+            </code>
+          </pre>
+
+
+            </div>
+            
+                
+        
+            </div>
+          </div>
+
+
+          
+
+
+          <div class="accordion-item">
+        <h2 class="accordion-header" id="dp">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne_dp" aria-expanded="false" 
+          aria-controls="collapseOne_dp">
+          Dettagli percorso
+          </button>
+        </h2>
+          <div id="collapseOne_dp" class="accordion-collapse collapse show" aria-labelledby="dp" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Il Webservice risponde con i dettagli del percorso
+        
+          <br> <strong>Endpoint WS</strong>: <a target="mappe" href="https://amiugis.amiu.genova.it/ws_amiugis/dettagli_percorso.php"> 
+              https://amiugis.amiu.genova.it/ws_amiugis/dettagli_percorso.php
+            </a>
+          
+            <br> <strong>Metodo: POST </strong>
+            <br> <strong>Parametri</strong>:
+            <ul>
+            <li> id: indicare l'id percorso</li>
+            <!--li> l: livello del filtro. Esistono attualmente 3 livelli:</li-->
+            </ul>
+          Il WS risponde con un json con i dettagli del percorso con i seguenti attributi:
+          <ul>
+            <li> seq: ordine piazzola </li>
+            <li> id_piazzola : id postazione</li>
+            <li> via: nome via</li>
+            <li> civ: eventuale numero civico</li>
+            <li> riferimento: riferimento piazzola </li>
+            <li> note_piazzola: eventuali altre note della piazzola </li>
+            <li> tipo_elem : tipo elemento</li>
+            <li> num: numero elementi </li>
+          </ul>   
+          
+          
+          <hr>
+          <h5>ESEMPIO:</h5>
+
+          <pre class="data-line data-language">
+            <code class="language-bash">
+curl -d "id=XXXXXX" -X POST http://amiugis.amiu.genova.it/ws_amiugis/dettagli_percorso.php
+            </code>
+          </pre>
+
+
+            </div>
+            
+                
+        
+            </div>
+          </div>
+
+
+      <!-- FINE IDEA -->    
       </div>
 
 

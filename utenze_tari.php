@@ -7,15 +7,15 @@ $tipo=$_POST['tipo'];
 $row_number=$_POST['row_start'];
 
 if ($tipo=='UD'){
-    $tabella="etl.utenze_tia_domestiche";
+    $tabella="etl.utenze_tia_domestiche_idea";
 } else if ($tipo=='UND'){
-    $tabella="etl.utenze_tia_non_domestiche";
+    $tabella="etl.utenze_tia_non_domestiche_idea";
 } else {
     die("Tipo utenza non supportato\n");
 }
 
 $query= "select foo.* from (
-    SELECT row_number() over ( order by id_utente),* 
+    SELECT row_number() over ( order by id_utenza), * 
     FROM ".$tabella."
     ) foo where row_number>= $1 limit 1000;";
 
