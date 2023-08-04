@@ -93,6 +93,6 @@ Si usa la libreria prism che è stata scaricata con un po' di impostazioni
 https://prismjs.com/download.html#themes=prism-dark
 
 
-curl -d "user=rmarzocchi&pwd=robbo@1984" -X POST http://localhost/ws_amiugis/create_token.php
+curl -d "user=xxxxxcc&pwd=xxxxx" -X POST http://localhost/ws_amiugis/create_token.php
 
 
