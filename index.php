@@ -38,8 +38,19 @@
             <li> Recupero access token 
             <a href="#token" class="btn btn-info"><i class="bi bi-link"></i> </a>
             </li>
-            <li> Interazione con IDEA BS (prevedono utente e password, che abilita un access token con durata limitata nel tempo)
+            <li> Interazione con IDEA BS per <ul>
+              <li> visualizzazione utenti Genova (acceso protetto da <a href="#token">token</a>)</li>
+              <li> censimento piazzole bilaterali,</li>
+              <li> visualizzazione percorsi bilaterali</li>
+            </ul>
+            <br>  (alcuni WS prevedono utente e password, che abilita un access token con durata limitata nel tempo) 
             <a href="#idea" class="btn btn-info"><i class="bi bi-link"></i> </a>
+            </li>
+            <li> Interazione con Tellus<ul>
+              <li> Visualizzazione percorsi </li>
+              <li> altro (in fase di sviluppo)</li>
+            </ul>
+            <a href="#tellus" class="btn btn-info"><i class="bi bi-link"></i> </a>
             </li>
             <li> geoservizi WMS e WFS 
             <a href="#wms_wfs" class="btn btn-info btn-sm"><i class="bi bi-link"></i> </a>
@@ -383,7 +394,217 @@ curl -d "id=XXXXXX" -X POST http://amiugis.amiu.genova.it/ws_amiugis/dettagli_pe
 
             </div>
             
-                
+           
+            <div class="accordion-item">
+        <h2 class="accordion-header" id="dp">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne_piazzole" aria-expanded="false" 
+          aria-controls="collapseOne_dp">
+          Piazzole
+          </button>
+        </h2>
+          <div id="collapseOne_piazzole" class="accordion-collapse collapse show" aria-labelledby="dp" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Il Webservice risponde con i dettagli delle piazzole
+        
+          <br> <strong>Endpoint WS</strong>: <a target="piazzole" href="https://amiugis.amiu.genova.it/ws_amiugis/piazzole.php"> 
+              https://amiugis.amiu.genova.it/ws_amiugis/piazzole.php
+            </a>
+          
+            <br> <strong>Metodo: POST </strong>
+          Il WS risponde con un json con i dettagli delle piazzole con i seguenti attributi:
+          <ul>
+            <li> id_piazzola : id postazione</li>
+            <li> via: nome via</li>
+            <li> comune: nome comune</li>
+            <li> municipio (solo per Comune di Genova)</li>
+            <li> quartiere (solo per Comune di Genova)</li>
+            <li> numero civico: eventuale numero civico</li>
+            <li> riferimento: riferimento piazzola </li>
+            <li> note: eventuali altre note della piazzola </li>
+            <li> elementi : eventuali altre note della piazzola </li>
+            <li> pap : 1 se Porta a Porta (PAP) - 0 se piazzola normale</li>
+            <li> num_elementi: numero elementi presenti in piazzola</li>
+            <li> num_elementi_privati: numero elementi privati presenti in piazzola</li>
+            <li> lat: latitudine piazzola </li>
+            <li> lon: longitudine piazzola </li>
+          </ul>   
+          
+          
+          <hr>
+          <h5>ESEMPIO:</h5>
+
+          <pre class="data-line data-language">
+            <code class="language-bash">
+curl -X POST http://amiugis.amiu.genova.it/ws_amiugis/piazzole.php
+            </code>
+          </pre>
+
+
+            </div>
+          
+
+
+
+
+
+            <div class="accordion-item">
+        <h2 class="accordion-header" id="dp">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne_poi" aria-expanded="false" 
+          aria-controls="collapseOne_dp">
+          Point Of Interest
+          </button>
+        </h2>
+          <div id="collapseOne_poi" class="accordion-collapse collapse show" aria-labelledby="dp" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Il Webservice risponde con i dettagli dei Punti di Interesse (Rimesse, UT e Scarichi vari)
+        
+          <br> <strong>Endpoint WS</strong>: <a target="piazzole" href="https://amiugis.amiu.genova.it/ws_amiugis/poi_idea.php"> 
+              https://amiugis.amiu.genova.it/ws_amiugis/poi_idea.php
+            </a>
+          
+            <br> <strong>Metodo: POST </strong>
+          Il WS risponde con un json con i dettagli dei Punti di Interesse (Point of Interest) che corrispondono a Rimesse, UT e Scarichi vari:
+          <ul>
+            <li> id : id punto di interesse</li>
+            <li> via: nome via</li>
+            <!--li> comune: nome comune</li>
+            <li> municipio (solo per Comune di Genova)</li>
+            <li> quartiere (solo per Comune di Genova)</li-->
+            <li> numero civico: eventuale numero civico</li>
+            <li> riferimento: riferimento </li>
+            <li> note: eventuali altre note  </li>
+            <li> lat: latitudine </li>
+            <li> lon: longitudine </li>
+            <li> tipo: tipologia POI </li>
+          </ul>   
+          
+          
+          <hr>
+          <h5>ESEMPIO:</h5>
+
+          <pre class="data-line data-language">
+            <code class="language-bash">
+curl -X POST http://amiugis.amiu.genova.it/ws_amiugis/poi_idea.php
+            </code>
+          </pre>
+
+
+            </div>
+
+
+
+            <div class="accordion-item">
+        <h2 class="accordion-header" id="dp">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne_ambiti" aria-expanded="false" 
+          aria-controls="collapseOne_dp">
+          Ambiti
+          </button>
+        </h2>
+          <div id="collapseOne_ambiti" class="accordion-collapse collapse show" aria-labelledby="dp" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Il Webservice risponde con i dettagli degli ambiti AMIU (dimensione sovra-comunale usata da AMIU nell'ambito del contratto di servizio)
+        
+          <br> <strong>Endpoint WS</strong>: <a target="ambiti" href="https://amiugis.amiu.genova.it/ws_amiugis/ambiti.php"> 
+              https://amiugis.amiu.genova.it/ws_amiugis/ambiti.php
+            </a>
+          
+            <br> <strong>Metodo: POST </strong>
+          Il WS risponde con un json con i dettagli degli ambiti che sono una dimensione sovra-comunale usata da AMIU nell'ambito del contratto di servizio:
+          <ul>
+            <li> id_ambito : id ambito</li>
+            <li> descr_ambito: descrizione ambito</li>
+          </ul>   
+          
+          
+          <hr>
+          <h5>ESEMPIO:</h5>
+
+          <pre class="data-line data-language">
+            <code class="language-bash">
+curl -X POST http://amiugis.amiu.genova.it/ws_amiugis/ambiti.php
+            </code>
+          </pre>
+            </div>
+
+
+
+
+
+
+            <div class="accordion-item">
+        <h2 class="accordion-header" id="dp">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne_comuni" aria-expanded="false" 
+          aria-controls="collapseOne_dp">
+          Comuni
+          </button>
+        </h2>
+          <div id="collapseOne_comuni" class="accordion-collapse collapse show" aria-labelledby="dp" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Il Webservice risponde con i dettagli dei Comuni
+        
+          <br> <strong>Endpoint WS</strong>: <a target="ambiti" href="https://amiugis.amiu.genova.it/ws_amiugis/comuni.php"> 
+              https://amiugis.amiu.genova.it/ws_amiugis/comuni.php
+            </a>
+          
+            <br> <strong>Metodo: POST </strong>
+          Il WS risponde con un json con i dettagli dei Comuni gestiti da AMIU :
+          <ul>
+            <li> id_comune : id Comune</li>
+            <li> descr_comune: nome del Comune</li>
+            <li> descr_provincia: nome della Provincia</li>
+            <li> prefisso_utenti: prefisso interno usato per il Comune</li>
+            <li> id_ambito : id ambito</li>
+          </ul>   
+          
+          
+          <hr>
+          <h5>ESEMPIO:</h5>
+
+          <pre class="data-line data-language">
+            <code class="language-bash">
+curl -X POST http://amiugis.amiu.genova.it/ws_amiugis/comuni.php
+            </code>
+          </pre>
+            </div>
+
+
+
+            <div class="accordion-item">
+        <h2 class="accordion-header" id="dp">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne_vie" aria-expanded="false" 
+          aria-controls="collapseOne_dp">
+          Vie
+          </button>
+        </h2>
+          <div id="collapseOne_vie" class="accordion-collapse collapse show" aria-labelledby="dp" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Il Webservice risponde con i dettagli delle vie
+        
+          <br> <strong>Endpoint WS</strong>: <a target="ambiti" href="https://amiugis.amiu.genova.it/ws_amiugis/vie.php"> 
+              https://amiugis.amiu.genova.it/ws_amiugis/vie.php
+            </a>
+          
+            <br> <strong>Metodo: POST </strong>
+          Il WS risponde con un json con i dettagli delle vie per ogni Comune:
+          <ul>
+            <li> id_via : id via</li>
+            <li> nome : nome via</li>
+            <li> id_comune : id Comune</li>
+            
+          </ul>   
+          
+          
+          <hr>
+          <h5>ESEMPIO:</h5>
+
+          <pre class="data-line data-language">
+            <code class="language-bash">
+curl -X POST http://amiugis.amiu.genova.it/ws_amiugis/vie.php
+            </code>
+          </pre>
+            </div>
+
+
         
             </div>
           </div>
@@ -404,7 +625,85 @@ curl -d "id=XXXXXX" -X POST http://amiugis.amiu.genova.it/ws_amiugis/dettagli_pe
 <hr>
 <br>
 
+<!-- TELLUS -->
+<h3 id="tellus">Interazione con Tellus</h3>
+    (attivi solo su rete interna o da specifici indirizzi IP)
+    <div class="accordion" id="accordionToken">
+          
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="GetPercorsi">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOneGetPercorsi" aria-expanded="false" 
+          aria-controls="collapseOneGetPercorsi">
+          WS pr recuperare i Percorsi Posteriori (item D)
+          </button>
+        </h2>
+          <div id="collapseOneGetPercorsi" class="accordion-collapse collapse show" aria-labelledby="h_GetPercorsi" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Il Webservice risponde con l'elenco dei percorsi posteriori
+        
+          <br> <strong>Endpoint WS</strong>: <a target="mappe" href="https://amiugis.amiu.genova.it/ws_amiugis/GetPercorsiP.php"> 
+              https://amiugis.amiu.genova.it/ws_amiugis/GetPercorsiP.php
+            </a>
+          <br> <strong>Metodo: POST </strong>
+          <br> <strong>Parametri (opzionali)</strong>:
+          <ul>
+          <li> last_update: ultima data di aggiornamento in formato YYYYMMDD (default <i>none</i>)</li> 
+          <li> page_size: (default 1000)</li>
+          <li> page_n: numero pagina (default 1)</li>
+          </ul>
+          Il WS risponde con l'elenco delle informazioni sui percorsi Posteriori
+          <ul>
+          <li>
+          CodPercorso*
+          </li><li>
+          Descrizione
+          </li><li>
+          Servizio
+          </li><li>
+          Id_ut*
+          </li><li>
+          Ut_rimessa
+          </li><li>
+          Freq_testata
+          </li><li>
+          Freq
+          </li><li>
+          Id_turno
+          </li><li>
+          Turno
+          </li><li>
+          Codice cer
+          </li><li>
+          Data_inizio_validita(inc)
+          </li><li>
+          Data_fine_Validità(escl)
+          </li><li>
+          Data_ultima_Modifica
+          </li><li>
+          Versione_Testata* (int)
+            </li></ul>
+          <hr>
+          <h5>ESEMPIO:</h5>
 
+          <pre class="data-line data-language">
+            <code class="language-bash">
+curl -d "last_update=20240601&page_size=200&page_n=1" -X POST http://amiugis.amiu.genova.it/ws_amiugis/GetPercorsiP.php
+            </code>
+          </pre>
+
+          
+            </div>
+            
+                
+        
+            </div>
+          </div>
+            <!-- FINE GetPercorsi -->    
+            </div>
+
+            <br>
+<a href="#intro" class="btn btn-info"> Torna all'indice </a>
+<hr>
 
 
 
