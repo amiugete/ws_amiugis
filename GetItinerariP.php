@@ -81,51 +81,69 @@ use OpenApi\Annotations as OA;
 
  include 'conn.php';
  //-- ELENCO PERCORSI POSTERIORI
- $query0=" select ep.cod_percorso, 
- ep.descrizione, at2.descrizione as servizio,
- pu.id_ut, u.descrizione as ut_rimessa, 
- ep.freq_testata, fo.descrizione_long as freq,
- ep.id_turno, t.descrizione as turno, 
- ep.codice_cer, 
- to_char(pu.data_attivazione, 'YYYYMMDD') as data_inizio_validita,
- to_char((pu.data_disattivazione - interval '1' day), 'YYYYMMDD') as data_fine_validita, 
- to_char(coalesce( ep.data_ultima_modifica,'2023-07-27'), 'YYYYMMDD') as data_ultima_modifica,
- ep.versione_testata
- from anagrafe_percorsi.elenco_percorsi ep 
- join anagrafe_percorsi.anagrafe_tipo at2 
-     on (select max(id_tipo) 
-     from anagrafe_percorsi.elenco_percorsi ep2 
-     where ep2.cod_percorso= ep.cod_percorso) = at2.id --= ep.id_tipo
- join etl.frequenze_ok fo on fo.cod_frequenza  = ep.freq_testata 
- join elem.turni t on t.id_turno = ep.id_turno 
+ $query0=" select distinct codice_modello_servizio as cod_percorso, ordine,
+  codice as id_elemento, 
+  frequenza as id_frequenza,
+  fo.descrizione_long , 
+  data_inizio,
+  data_fine, 
+  id_asta_percorso, ripasso, 
+  to_char(dmi.data_ultima_modifica, 'YYYYMMDD') as data_ultima_modifica 
+ from (
+SELECT codice_modello_servizio , ordine, objecy_type, 
+  codice,  quantita, lato_servizio, percent_trattamento,frequenza,
+  ripasso, numero_passaggi, replace(replace(coalesce(nota,''),'DA PIAZZOLA',''),';', ' - ') as nota,
+  codice_qualita, codice_tipo_servizio, data_inizio, coalesce(data_fine, '20991231') as data_fine, 
+  id_asta_percorso
+	 FROM anagrafe_percorsi.v_percorsi_elementi_tratti where data_inizio < coalesce(data_fine, '20991231')
+	 union 
+	   SELECT codice_modello_servizio, ordine, objecy_type, 
+  codice, quantita, lato_servizio, percent_trattamento,frequenza,
+  ripasso, numero_passaggi, replace(replace(coalesce(nota,''),'DA PIAZZOLA',''),';', ' - ') as nota,
+  codice_qualita, codice_tipo_servizio, data_inizio, coalesce(data_fine, '20991231') as data_fine, 
+  id_asta_percorso
+	 FROM anagrafe_percorsi.v_percorsi_elementi_tratti_ovs where data_inizio < coalesce(data_fine, '20991231')
+	union 
+	SELECT codice_modello_servizio, ordine, objecy_type, 
+  codice, quantita, lato_servizio, percent_trattamento,frequenza,
+  ripasso, numero_passaggi, replace(replace(coalesce(nota,''),'DA PIAZZOLA',''),';', ' - ') as nota,
+  codice_qualita, codice_tipo_servizio, data_inizio, coalesce(data_fine, '20991231') as data_fine, 
+  id_asta_percorso
+	 FROM anagrafe_percorsi.mv_percorsi_elementi_tratti_dismessi where data_inizio < coalesce(data_fine, '20991231')
+ ) tab 
+ join etl.frequenze_ok fo on fo.cod_frequenza = tab.frequenza
+ left join anagrafe_percorsi.date_modifica_itinerari dmi on dmi.cod_percorso= tab.codice_modello_servizio
+ join anagrafe_percorsi.elenco_percorsi ep on ep.cod_percorso = tab.codice_modello_servizio 
+ 	and ep.versione_testata = 
+ 	(select max(versione_testata) from anagrafe_percorsi.elenco_percorsi ep2 where cod_percorso= tab.codice_modello_servizio)
+ join anagrafe_percorsi.anagrafe_tipo at2 on at2.id=ep.id_tipo 
  join anagrafe_percorsi.percorsi_ut pu 
          on pu.cod_percorso = ep.cod_percorso 
          AND (pu.data_attivazione = ep.data_inizio_validita OR pu.data_disattivazione = ep.data_fine_validita) 
          and pu.solo_visualizzazione = 'N' and pu.data_attivazione < pu.data_disattivazione
- join anagrafe_percorsi.cons_mapping_uo cmu on cmu.id_uo = pu.id_ut 
- join topo.ut u on u.id_ut = cmu.id_uo_sit 
- where (ep.cod_percorso in (
-         select distinct cod_percorso from anagrafe_percorsi.elenco_percorsi ep  
-         where data_fine_validita >= now()::date or data_ultima_modifica >= now()::date - interval '1' day
-         )  or data_fine_validita >= now()::date - interval '1' month)
-         and at2.id_servizio_sit in 
-           (
-         select id_servizio from elem.servizi s 
-         where riempimento = 1
-         and id_servizio in (
-             select id_servizio  from elem.elementi_servizio es where tipo_elemento in 
-                 (
-                 select tipo_elemento  
-                 from elem.tipi_elemento te 
-                 where tipologia_elemento in ('P'/*Posteriore*/, 'T' /*Terra*/)
-                 )
-             )
-      ) and u.id_zona in (1,2,3,5,6)";
+ join anagrafe_percorsi.cons_mapping_uo cmu on cmu.id_uo = pu.id_ut
+ join topo.ut u on u.id_ut = cmu.id_uo_sit        
+ where tab.codice_tipo_servizio = 'RACC' 
+ and at2.id_servizio_sit in 
+          (
+		select id_servizio from elem.servizi s 
+		where riempimento = 1
+		and id_servizio in (
+			select id_servizio  from elem.elementi_servizio es where tipo_elemento in 
+				(
+				select tipo_elemento  
+				from elem.tipi_elemento te 
+				where tipologia_elemento in ('P'/*Posteriore*/, 'T' /*Terra*/)
+				)
+			)
+ 	)
+ and u.id_zona in (1,2,3,5,6)
+";
 
     if($_POST['last_update']){
-        $query1= " and ep.data_ultima_modifica >= to_date($1, 'YYYYMMDD') order by cod_percorso, ep.versione_testata limit $2 offset $3*($4-1)";
+        $query1= " and dmi.data_ultima_modifica >= to_date($1, 'YYYYMMDD') order by codice_modello_servizio, ordine, codice, data_inizio, ripasso limit $2 offset $3*($4-1)";
     } else {
-        $query1= ' order by cod_percorso, ep.versione_testata limit $1 offset $2*($3-1)';
+        $query1= 'order by codice_modello_servizio, ordine, codice, data_inizio, ripasso limit $1 offset $2*($3-1)';
     }
 
     $query= $query0 .' '. $query1;
@@ -141,13 +159,13 @@ use OpenApi\Annotations as OA;
         $page_n=1;
     }
     //echo $query . "<br>";
-    $result = pg_prepare($conn, "query_getpercorsi", $query);
+    $result = pg_prepare($conn, "query_getitinerari", $query);
     #echo $result. "<br>";
    
     if($_POST['last_update']){
-        $result = pg_execute($conn, "query_getpercorsi", array($_POST['last_update'], $page_size, $page_size, $page_n));
+        $result = pg_execute($conn, "query_getitinerari", array($_POST['last_update'], $page_size, $page_size, $page_n));
     } else {
-        $result = pg_execute($conn, "query_getpercorsi", array($page_size, $page_size, $page_n));
+        $result = pg_execute($conn, "query_getitinerari", array($page_size, $page_size, $page_n));
     }
     
     

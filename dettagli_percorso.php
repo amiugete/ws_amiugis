@@ -1,5 +1,6 @@
 <?php
 session_start();
+header('Content-Type: application/json; charset=utf-8');
 
 // AUTENTICAZIONE
 //require_once("test_bearer.php");

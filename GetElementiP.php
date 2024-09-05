@@ -80,52 +80,39 @@ use OpenApi\Annotations as OA;
  header('Content-Type: application/json; charset=utf-8');
 
  include 'conn.php';
- //-- ELENCO PERCORSI POSTERIORI
- $query0=" select ep.cod_percorso, 
- ep.descrizione, at2.descrizione as servizio,
- pu.id_ut, u.descrizione as ut_rimessa, 
- ep.freq_testata, fo.descrizione_long as freq,
- ep.id_turno, t.descrizione as turno, 
- ep.codice_cer, 
- to_char(pu.data_attivazione, 'YYYYMMDD') as data_inizio_validita,
- to_char((pu.data_disattivazione - interval '1' day), 'YYYYMMDD') as data_fine_validita, 
- to_char(coalesce( ep.data_ultima_modifica,'2023-07-27'), 'YYYYMMDD') as data_ultima_modifica,
- ep.versione_testata
- from anagrafe_percorsi.elenco_percorsi ep 
- join anagrafe_percorsi.anagrafe_tipo at2 
-     on (select max(id_tipo) 
-     from anagrafe_percorsi.elenco_percorsi ep2 
-     where ep2.cod_percorso= ep.cod_percorso) = at2.id --= ep.id_tipo
- join etl.frequenze_ok fo on fo.cod_frequenza  = ep.freq_testata 
- join elem.turni t on t.id_turno = ep.id_turno 
- join anagrafe_percorsi.percorsi_ut pu 
-         on pu.cod_percorso = ep.cod_percorso 
-         AND (pu.data_attivazione = ep.data_inizio_validita OR pu.data_disattivazione = ep.data_fine_validita) 
-         and pu.solo_visualizzazione = 'N' and pu.data_attivazione < pu.data_disattivazione
- join anagrafe_percorsi.cons_mapping_uo cmu on cmu.id_uo = pu.id_ut 
- join topo.ut u on u.id_ut = cmu.id_uo_sit 
- where (ep.cod_percorso in (
-         select distinct cod_percorso from anagrafe_percorsi.elenco_percorsi ep  
-         where data_fine_validita >= now()::date or data_ultima_modifica >= now()::date - interval '1' day
-         )  or data_fine_validita >= now()::date - interval '1' month)
-         and at2.id_servizio_sit in 
-           (
-         select id_servizio from elem.servizi s 
-         where riempimento = 1
-         and id_servizio in (
-             select id_servizio  from elem.elementi_servizio es where tipo_elemento in 
-                 (
-                 select tipo_elemento  
-                 from elem.tipi_elemento te 
-                 where tipologia_elemento in ('P'/*Posteriore*/, 'T' /*Terra*/)
-                 )
-             )
-      ) and u.id_zona in (1,2,3,5,6)";
+ //-- ELENCO ELEMENTI
+ $query0="select id_elemento, id_piazzola, ee.tipo_elemento as id_tipo_elemento,
+te.descrizione as tipo_elemento, tr.nome as rifiuto, te.volume as volume_litri,
+matricola, tag, serratura, matricola_serratura, 
+coalesce(data_inserimento,  '19700101') as data_inserimento,
+ data_eliminazione, 
+coalesce(greatest(data_inserimento, data_eliminazione, data_ultima_modifica), '19700101') as data_ultima_modifica
+from 
+	(select id_elemento, id_piazzola, tipo_elemento, matricola, tag, serratura, matricola_serratura,
+	to_char(e.data_inserimento, 'YYYYMMDD') as data_inserimento,
+	to_char(e.data_ultima_modifica, 'YYYYMMDD') as data_ultima_modifica,
+	null as data_eliminazione
+	from elem.elementi e
+	union 
+	select id_elemento, id_piazzola, tipo_elemento, matricola, tag, serratura, matricola_serratura,
+	to_char(e2.data_inserimento, 'YYYYMMDD') as data_inserimento,
+	to_char(e2.data_ultima_modifica, 'YYYYMMDD') as data_ultima_modifica,
+	to_char(e2.data_eliminazione, 'YYYYMMDD') as data_eliminazione
+	from history.elementi e2) ee
+join elem.tipi_elemento te on  te.tipo_elemento = ee.tipo_elemento
+join elem.tipi_rifiuto tr on te.tipo_rifiuto = tr.tipo_rifiuto 
+where te.tipo_elemento in 
+(
+select tipo_elemento  
+from elem.tipi_elemento te 
+where tipologia_elemento in ('P'/*Posteriore*/, 'T' /*Terra*/, 'A' /*Altro*/) and in_piazzola = 1
+)";
 
     if($_POST['last_update']){
-        $query1= " and ep.data_ultima_modifica >= to_date($1, 'YYYYMMDD') order by cod_percorso, ep.versione_testata limit $2 offset $3*($4-1)";
+        $query1= "and  greatest(data_inserimento, data_eliminazione, data_ultima_modifica) >= $1::text
+        order by id_elemento limit $2 offset $3*($4-1)";
     } else {
-        $query1= ' order by cod_percorso, ep.versione_testata limit $1 offset $2*($3-1)';
+        $query1= ' order by id_elemento limit $1 offset $2*($3-1)';
     }
 
     $query= $query0 .' '. $query1;
@@ -141,13 +128,13 @@ use OpenApi\Annotations as OA;
         $page_n=1;
     }
     //echo $query . "<br>";
-    $result = pg_prepare($conn, "query_getpercorsi", $query);
+    $result = pg_prepare($conn, "query_getelementip", $query);
     #echo $result. "<br>";
    
     if($_POST['last_update']){
-        $result = pg_execute($conn, "query_getpercorsi", array($_POST['last_update'], $page_size, $page_size, $page_n));
+        $result = pg_execute($conn, "query_getelementip", array($_POST['last_update'], $page_size, $page_size, $page_n));
     } else {
-        $result = pg_execute($conn, "query_getpercorsi", array($page_size, $page_size, $page_n));
+        $result = pg_execute($conn, "query_getelementip", array($page_size, $page_size, $page_n));
     }
     
     

@@ -81,51 +81,26 @@ use OpenApi\Annotations as OA;
 
  include 'conn.php';
  //-- ELENCO PERCORSI POSTERIORI
- $query0=" select ep.cod_percorso, 
- ep.descrizione, at2.descrizione as servizio,
- pu.id_ut, u.descrizione as ut_rimessa, 
- ep.freq_testata, fo.descrizione_long as freq,
- ep.id_turno, t.descrizione as turno, 
- ep.codice_cer, 
- to_char(pu.data_attivazione, 'YYYYMMDD') as data_inizio_validita,
- to_char((pu.data_disattivazione - interval '1' day), 'YYYYMMDD') as data_fine_validita, 
- to_char(coalesce( ep.data_ultima_modifica,'2023-07-27'), 'YYYYMMDD') as data_ultima_modifica,
- ep.versione_testata
- from anagrafe_percorsi.elenco_percorsi ep 
- join anagrafe_percorsi.anagrafe_tipo at2 
-     on (select max(id_tipo) 
-     from anagrafe_percorsi.elenco_percorsi ep2 
-     where ep2.cod_percorso= ep.cod_percorso) = at2.id --= ep.id_tipo
- join etl.frequenze_ok fo on fo.cod_frequenza  = ep.freq_testata 
- join elem.turni t on t.id_turno = ep.id_turno 
- join anagrafe_percorsi.percorsi_ut pu 
-         on pu.cod_percorso = ep.cod_percorso 
-         AND (pu.data_attivazione = ep.data_inizio_validita OR pu.data_disattivazione = ep.data_fine_validita) 
-         and pu.solo_visualizzazione = 'N' and pu.data_attivazione < pu.data_disattivazione
- join anagrafe_percorsi.cons_mapping_uo cmu on cmu.id_uo = pu.id_ut 
- join topo.ut u on u.id_ut = cmu.id_uo_sit 
- where (ep.cod_percorso in (
-         select distinct cod_percorso from anagrafe_percorsi.elenco_percorsi ep  
-         where data_fine_validita >= now()::date or data_ultima_modifica >= now()::date - interval '1' day
-         )  or data_fine_validita >= now()::date - interval '1' month)
-         and at2.id_servizio_sit in 
-           (
-         select id_servizio from elem.servizi s 
-         where riempimento = 1
-         and id_servizio in (
-             select id_servizio  from elem.elementi_servizio es where tipo_elemento in 
-                 (
-                 select tipo_elemento  
-                 from elem.tipi_elemento te 
-                 where tipologia_elemento in ('P'/*Posteriore*/, 'T' /*Terra*/)
-                 )
-             )
-      ) and u.id_zona in (1,2,3,5,6)";
+ $query0="select p.id_piazzola, 
+v.nome as via, 
+p.numero_civico, 
+p.riferimento,
+p.note,
+st_y(st_transform(p2.geoloc,4326)) as lat,
+st_x(st_transform(p2.geoloc,4326)) as lon,
+coalesce(to_char(p.data_inserimento, 'YYYYMMDD'), '19700101') as data_inserimento, 
+to_char(p.data_eliminazione, 'YYYYMMDD') as data_eliminazione, 
+coalesce(to_char(greatest(p.data_ultima_modifica,p2.data_ultima_modifica, p.data_eliminazione) , 'YYYYMMDD'), '19700101') as data_ultima_modifica
+from elem.piazzole p 
+join elem.aste a on a.id_asta = p.id_asta 
+join topo.vie v on v.id_via = a.id_via 
+join geo.piazzola p2 on p2.id = p.id_piazzola";
 
     if($_POST['last_update']){
-        $query1= " and ep.data_ultima_modifica >= to_date($1, 'YYYYMMDD') order by cod_percorso, ep.versione_testata limit $2 offset $3*($4-1)";
+        $query1= "where greatest(p.data_inserimento, p.data_ultima_modifica,p2.data_ultima_modifica, p.data_eliminazione) >= to_date($1, 'YYYYMMDD') 
+        order by id_piazzola limit $2 offset $3*($4-1)";
     } else {
-        $query1= ' order by cod_percorso, ep.versione_testata limit $1 offset $2*($3-1)';
+        $query1= ' order by id_piazzola limit $1 offset $2*($3-1)';
     }
 
     $query= $query0 .' '. $query1;
@@ -141,13 +116,13 @@ use OpenApi\Annotations as OA;
         $page_n=1;
     }
     //echo $query . "<br>";
-    $result = pg_prepare($conn, "query_getpercorsi", $query);
+    $result = pg_prepare($conn, "query_getpiazzole", $query);
     #echo $result. "<br>";
    
     if($_POST['last_update']){
-        $result = pg_execute($conn, "query_getpercorsi", array($_POST['last_update'], $page_size, $page_size, $page_n));
+        $result = pg_execute($conn, "query_getpiazzole", array($_POST['last_update'], $page_size, $page_size, $page_n));
     } else {
-        $result = pg_execute($conn, "query_getpercorsi", array($page_size, $page_size, $page_n));
+        $result = pg_execute($conn, "query_getpiazzole", array($page_size, $page_size, $page_n));
     }
     
     

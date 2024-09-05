@@ -634,7 +634,7 @@ curl -X POST http://amiugis.amiu.genova.it/ws_amiugis/vie.php
         <h2 class="accordion-header" id="GetPercorsi">
           <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOneGetPercorsi" aria-expanded="false" 
           aria-controls="collapseOneGetPercorsi">
-          WS pr recuperare i Percorsi Posteriori (item D)
+          WS per recuperare i Percorsi Posteriori (item D)
           </button>
         </h2>
           <div id="collapseOneGetPercorsi" class="accordion-collapse collapse show" aria-labelledby="h_GetPercorsi" data-bs-parent="#accordionExample">
@@ -699,7 +699,273 @@ curl -d "last_update=20240601&page_size=200&page_n=1" -X POST http://amiugis.ami
             </div>
           </div>
             <!-- FINE GetPercorsi -->    
+
+
+
+
+
+
+
+
             </div>
+
+            
+            
+            <div class="accordion" id="accordionToken">
+          
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="GetPiazzole">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOneGetPiazzole" aria-expanded="false" 
+          aria-controls="collapseOneGetPiazzole">
+          WS per recuperare le Piazzole AMIU (o Punti di Raccolta) (item D)
+          </button>
+        </h2>
+          <div id="collapseOneGetPiazzole" class="accordion-collapse collapse show" aria-labelledby="h_GetPiazzole" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Il Webservice risponde con l'elenco dei percorsi posteriori
+        
+          <br> <strong>Endpoint WS</strong>: <a target="mappe" href="https://amiugis.amiu.genova.it/ws_amiugis/GetPiazzole.php"> 
+              https://amiugis.amiu.genova.it/ws_amiugis/GetPiazzole.php
+            </a>
+          <br> <strong>Metodo: POST </strong>
+          <br> <strong>Parametri (opzionali)</strong>:
+          <ul>
+          <li> last_update: ultima data di aggiornamento in formato YYYYMMDD (default <i>none</i>)</li> 
+          <li> page_size: (default 1000)</li>
+          <li> page_n: numero pagina (default 1)</li>
+          </ul>
+          Il WS risponde con l'elenco delle informazioni sulle piazzole
+          <ul>
+          <li>
+          Id_Piazzola*
+          </li><li>
+          Via 
+          </li><li>
+          Numero_civico
+          </li><li>
+          Riferimento
+          </li><li>
+          Note
+          </li><li>
+          Lat
+          </li><li>
+          Lon
+          </li><li>
+          Data_eliminazione ('YYYYMMDD') 
+          </li><li>
+          Data_ultima_modifica ('YYYYMMDD') 
+          </li>
+         </ul>
+          <hr>
+          <h5>ESEMPIO:</h5>
+
+          <pre class="data-line data-language">
+            <code class="language-bash">
+curl -d "last_update=20240601&page_size=200&page_n=1" -X POST http://amiugis.amiu.genova.it/ws_amiugis/GetPiazzole.php
+            </code>
+          </pre>
+
+          
+            </div>
+            
+                
+        
+            </div>
+          </div>
+            <!-- FINE GetPiazzole -->  
+
+            <div class="accordion" id="accordionToken">
+          
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="GetElementiP">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOneGetElementiP" aria-expanded="false" 
+          aria-controls="collapseOneGetElementiP">
+          WS per recuperare gli elementi posteriori (item D)
+          </button>
+        </h2>
+          <div id="collapseOneGetElementiP" class="accordion-collapse collapse show" aria-labelledby="h_GetElementiP" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Il Webservice risponde con l'elenco degli elementi Posteriori o ad essi assimilabili
+        
+          <br> <strong>Endpoint WS</strong>: <a target="mappe" href="https://amiugis.amiu.genova.it/ws_amiugis/GetElementiP.php"> 
+              https://amiugis.amiu.genova.it/ws_amiugis/GetElementiP.php
+            </a>
+          <br> <strong>Metodo: POST </strong>
+          <br> <strong>Parametri (opzionali)</strong>:
+          <ul>
+          <li> last_update: ultima data di aggiornamento in formato YYYYMMDD (default <i>none</i>)</li> 
+          <li> page_size: (default 1000)</li>
+          <li> page_n: numero pagina (default 1)</li>
+          </ul>
+          Il WS risponde con l'elenco delle informazioni sugli elementi
+          <ul>
+          <li>
+          Id_Elemento*
+          </li><li>
+          Id_Piazzola 
+          </li><li>
+          id_tipo_elemento 
+          </li><li>
+          tipo_elemento
+          </li><li>
+          rifiuto
+          </li><li>
+          volume_litri
+          </li><li>
+          Matricola
+          </li><li>
+          Tag
+          </li><li>
+          Serratura (0: non presente, NULL: manca informazione, 1: presente)
+          </li><li>
+          Data_Inserimento ('YYYYMMDD') 
+          </li><li>
+          Data_eliminazione ('YYYYMMDD') 
+          </li><li>
+          Data_ultima_modifica ('YYYYMMDD') 
+          </li>
+         </ul>
+          <hr>
+          <h5>ESEMPIO:</h5>
+
+          <pre class="data-line data-language">
+            <code class="language-bash">
+curl -d "last_update=20240601&page_size=200&page_n=1" -X POST http://amiugis.amiu.genova.it/ws_amiugis/GetElementiP.php
+            </code>
+          </pre>
+
+          
+            </div>
+            
+                
+        
+            </div>
+          </div>
+            <!-- FINE GetElementiP -->
+
+
+
+
+
+            <div class="accordion-item">
+        <h2 class="accordion-header" id="GetItinerari">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOneGetItinerari" aria-expanded="false" 
+          aria-controls="collapseOneGetItinerari">
+          WS per recuperare gli Itinerari dei percorsi Posteriori (item D)
+          </button>
+        </h2>
+          <div id="collapseOneGetItinerari" class="accordion-collapse collapse show" aria-labelledby="h_GetItinerari" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Il Webservice risponde con i dettagli degli Itinerari (tappe) dei percorsi posteriori
+        
+          <br> <strong>Endpoint WS</strong>: <a target="mappe" href="https://amiugis.amiu.genova.it/ws_amiugis/GetItinerariP.php"> 
+              https://amiugis.amiu.genova.it/ws_amiugis/GetItinerariP.php
+            </a>
+          <br> <strong>Metodo: POST </strong>
+          <br> <strong>Parametri (opzionali)</strong>:
+          <ul>
+          <li> last_update: ultima data di aggiornamento in formato YYYYMMDD (default <i>none</i>)</li> 
+          <li> page_size: (default 1000)</li>
+          <li> page_n: numero pagina (default 1)</li>
+          </ul>
+          Il WS risponde con l'elenco delle informazioni sugli Itinerari dei percorsi posteriori
+          <ul>
+          <li>
+          CodPercorso*
+          </li><li>
+          Ordine
+          </li><li>
+          Id_elemento*
+          </li><li>
+          Id_frequenza
+          </li><li>
+          Descrizione_long (descrizione della frequenza)
+          </li><li>
+          data_inizio ('YYYYMMDD') inclusa
+          </li><li>
+          data_fine ('YYYYMMDD') inclusa
+          </li><li>
+          Id_asta_percorso*
+          </li><li>
+          data_ultima_modifica ('YYYYMMDD') 
+          </li></ul>
+          <hr>
+          <h5>ESEMPIO:</h5>
+
+          <pre class="data-line data-language">
+            <code class="language-bash">
+curl -d "last_update=20240601&page_size=200&page_n=1" -X POST http://amiugis.amiu.genova.it/ws_amiugis/GetItinerariP.php
+            </code>
+          </pre>
+
+          
+            </div>
+            
+                
+        
+            </div>
+          </div>
+            <!-- FINE GetItinerari -->  
+
+
+
+            <div class="accordion-item">
+        <h2 class="accordion-header" id="GetDepositi">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOneGetDepositi" aria-expanded="false" 
+          aria-controls="collapseOneGetDepositi">
+          WS per recuperare posizione di Unità territoriali e Rimesse (item D)
+          </button>
+        </h2>
+          <div id="collapseOneGetDepositi" class="accordion-collapse collapse show" aria-labelledby="h_GetDepositi" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Il Webservice risponde con i dettagli di Unità territoriali e Rimesse
+        
+          <br> <strong>Endpoint WS</strong>: <a target="mappe" href="https://amiugis.amiu.genova.it/ws_amiugis/GetDepositi.php"> 
+              https://amiugis.amiu.genova.it/ws_amiugis/GetDepositi.php
+            </a>
+          <br> <strong>Metodo: POST </strong>
+          <br> <strong>Parametri (opzionali)</strong>:
+          <ul>
+          <li> last_update: ultima data di aggiornamento in formato YYYYMMDD (default <i>none</i>)</li> 
+          <li> page_size: (default 1000)</li>
+          <li> page_n: numero pagina (default 1)</li>
+          </ul>
+          Il WS risponde con l'elenco delle informazioni su Unità territoriali e Rimesse
+          <ul>
+          <li>
+          id*
+          </li><li>
+          Descizione
+          </li><li>
+          Long
+          </li><li>
+          Lat
+          </li><li>
+          Raggio
+          </li><li>
+          data_inizio ('YYYYMMDD') inclusa
+          </li><li>
+          data_fine ('YYYYMMDD') inclusa
+          </li><li>
+          data_ultima_modifica ('YYYYMMDD') 
+          </li></ul>
+          <hr>
+          <h5>ESEMPIO:</h5>
+
+          <pre class="data-line data-language">
+            <code class="language-bash">
+curl -d "last_update=20240601&page_size=200&page_n=1" -X POST http://amiugis.amiu.genova.it/ws_amiugis/GetDepositi.php
+            </code>
+          </pre>
+
+          
+            </div>
+            
+                
+        
+            </div>
+          </div>
+            <!-- FINE GetDepositi -->  
 
             <br>
 <a href="#intro" class="btn btn-info"> Torna all'indice </a>
