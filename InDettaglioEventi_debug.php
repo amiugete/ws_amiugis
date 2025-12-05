@@ -76,7 +76,7 @@ use OpenApi\Annotations as OA;
 
 
  session_start();
- // formatto il file in formato json
+
  header('Content-Type: application/json; charset=utf-8');
 
 
@@ -87,11 +87,10 @@ $dettagli_errore= array();
 
 
 // takes raw data from the request 
-//$json = file_get_contents('php://input');
+$json = file_get_contents('php://input');
 //echo $json;
 // Converts it into a PHP object 
-//$data = json_decode($json, true);
-
+//echo 'OK<br>';
 $data = json_decode(file_get_contents('php://input'), true);
 
 $error='';
@@ -120,31 +119,33 @@ switch (json_last_error()) {
       break;
   }
 
-if ($error != ''){
+if ($error!=''){
     http_response_code(400);
     print_r(json_encode($error));
     exit();
 }
-
-
+//echo " 2 ";
 //echo $data;
+//echo " 3 ";
 
 //echo count($data);
+//echo " 4";
+
+
 
 include 'conn.php';
 
 
-
-$query_insert="INSERT INTO tellus.dettaglio_eventi 
+$query_insert="INSERT INTO tellus.dettaglio_eventi_debug
             (id, data_ora, geoloc,
             info0, info1, info2, info3,
             tipo_evento, targa) VALUES
-            ($1, $2::TIMESTAMPTZ, ST_SetSRID(ST_MakePoint($3, $4),4326), $5, $6, $7,
+            ($1, $2, ST_SetSRID(ST_MakePoint($3, $4),4326), $5, $6, $7,
             $8, $9, $10)
             ON CONFLICT (id) /* or you may use [DO NOTHING;] */ 
             DO UPDATE  
-            SET data_ultima_modifica = now(),
-                data_ora=$2::TIMESTAMPTZ, 
+            SET  data_ultima_modifica = now(),
+                data_ora=$2,
                 geoloc=ST_SetSRID(ST_MakePoint($3, $4),4326),
                 info0=$5,
                 info1=$6,

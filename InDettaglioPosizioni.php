@@ -135,23 +135,25 @@ include 'conn.php';
 
 
 
-$query_insert="INSERT INTO tellus.dettaglio_eventi 
-            (id, data_ora, geoloc,
-            info0, info1, info2, info3,
-            tipo_evento, targa) VALUES
-            ($1, $2::TIMESTAMPTZ, ST_SetSRID(ST_MakePoint($3, $4),4326), $5, $6, $7,
-            $8, $9, $10)
-            ON CONFLICT (id) /* or you may use [DO NOTHING;] */ 
+$query_insert="INSERT INTO tellus.posizioni 
+            (id, data_ora,
+            geoloc,
+            vel, km_parziali,
+            targa) VALUES
+            ($1, /*to_timestamp($2, 'YYYY-MM-DD HH24:MI:SS.MS'),*/
+            $2::TIMESTAMPTZ,
+            ST_SetSRID(ST_MakePoint($3, $4),4326), 
+            $5, $6,
+            $7)
+            ON CONFLICT (data_ora,targa) /* or you may use [DO NOTHING;] */ 
             DO UPDATE  
             SET data_ultima_modifica = now(),
-                data_ora=$2::TIMESTAMPTZ, 
+                /*data_ora=to_timestamp($2, 'YYYY-MM-DD HH24:MI:SS.MS'),*/
+                data_ora=$2::TIMESTAMPTZ,
                 geoloc=ST_SetSRID(ST_MakePoint($3, $4),4326),
-                info0=$5,
-                info1=$6,
-                info2=$7,
-                info3=$8,
-                tipo_evento=$9, 
-                targa=$10";
+                vel=$5,
+                km_parziali=$6,
+                targa=$7";
 
 $result = pg_prepare($conn, "query_insert", $query_insert);
     //echo  pg_last_error($conn_sovr);
@@ -180,11 +182,8 @@ while ($i < count($data)){
         $data[$i]['dateTime'],
         $data[$i]['longitude'],
         $data[$i]['latitude'],
-        $data[$i]['info0'],
-        $data[$i]['info1'],
-        $data[$i]['info2'],
-        $data[$i]['info3'],
-        $data[$i]['eventTypeId'],
+        $data[$i]['vel'],
+        $data[$i]['km_parziali'],
         $data[$i]['vehiclePlate'],
 
 

@@ -9,6 +9,7 @@ class ComposerStaticInit592b41dbae5132c280003213b08910c4
     public static $files = array (
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
+        'ace6d88241f812b4accb2d847454aef6' => __DIR__ . '/..' . '/halaxa/json-machine/src/functions.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -25,6 +26,10 @@ class ComposerStaticInit592b41dbae5132c280003213b08910c4
         'O' => 
         array (
             'OpenApi\\' => 8,
+        ),
+        'J' => 
+        array (
+            'JsonMachine\\' => 12,
         ),
     );
 
@@ -48,6 +53,10 @@ class ComposerStaticInit592b41dbae5132c280003213b08910c4
         'OpenApi\\' => 
         array (
             0 => __DIR__ . '/..' . '/zircote/swagger-php/src',
+        ),
+        'JsonMachine\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/halaxa/json-machine/src',
         ),
     );
 

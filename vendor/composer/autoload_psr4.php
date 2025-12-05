@@ -11,4 +11,5 @@ return array(
     'Symfony\\Component\\Finder\\' => array($vendorDir . '/symfony/finder'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log/src'),
     'OpenApi\\' => array($vendorDir . '/zircote/swagger-php/src'),
+    'JsonMachine\\' => array($vendorDir . '/halaxa/json-machine/src'),
 );

@@ -89,7 +89,7 @@ st_y(st_transform(r.geoloc, 4326)) as lat,
 100 as raggio, 
 coalesce(to_char(data_inserimento, 'YYYYMMDD'), '19700101') as data_inizio,
 to_char(least(r.data_eliminazione, e.data_eliminazione), 'YYYYMMDD') as data_fine, 
-to_char(greatest(r.data_ultima_modifica, e.data_ultima_modifica), 'YYYYMMDD') as data_ultima_modifica
+coalesce(to_char(greatest(r.data_ultima_modifica, e.data_ultima_modifica), 'YYYYMMDD'), '19700101') as data_ultima_modifica
 from (select id_elemento, riferimento, note, data_inserimento, null as data_eliminazione, data_ultima_modifica 
 from elem.elementi 
 where tipo_elemento = 128 /*rimessa*/

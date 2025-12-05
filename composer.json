@@ -1,5 +1,6 @@
 {
     "require": {
-        "zircote/swagger-php": "^4.10"
+        "zircote/swagger-php": "^4.10",
+        "halaxa/json-machine": "^1.2"
     }
 }
