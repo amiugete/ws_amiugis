@@ -8,8 +8,19 @@ include 'conn.php';
 
 
 //$idcivico=$_GET["id"];
-$query="select id_comune, descr_comune, descr_provincia, prefisso_utenti, id_ambito, cod_istat
-from topo.comuni c";
+$query="select cc.cod_civico, 
+numero::int, 
+lettera,
+colore, 
+testo,
+cod_strada,
+1 as id_comune, 
+id_municipio, 
+st_y(st_transform(geoloc,4326)) as lat,
+st_x(st_transform(geoloc,4326)) as lon,
+cc.ins_date as insert_date,
+cc.mod_date as update_date 
+from etl.civici_comune cc";
 
 //echo $query . "<br>";
 $result = pg_prepare($conn, "my_query", $query);

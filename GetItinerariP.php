@@ -88,6 +88,7 @@ use OpenApi\Annotations as OA;
   data_inizio,
   data_fine, 
   id_asta_percorso, ripasso, 
+  ep.freq_settimane as periodicita,
   to_char(dmi.data_ultima_modifica, 'YYYYMMDD') as data_ultima_modifica 
  from (
 SELECT codice_modello_servizio , ordine, objecy_type, 

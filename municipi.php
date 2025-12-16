@@ -8,8 +8,10 @@ include 'conn.php';
 
 
 //$idcivico=$_GET["id"];
-$query="select id_comune, descr_comune, descr_provincia, prefisso_utenti, id_ambito, cod_istat
-from topo.comuni c";
+$query="select mac.codice_municipio::int as id_municipio, 
+1 as id_comune,
+nome_municipio as descrizione
+from geo.municipi_area_comune mac  ";
 
 //echo $query . "<br>";
 $result = pg_prepare($conn, "my_query", $query);

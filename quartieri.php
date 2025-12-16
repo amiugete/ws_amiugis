@@ -8,8 +8,11 @@ include 'conn.php';
 
 
 //$idcivico=$_GET["id"];
-$query="select id_comune, descr_comune, descr_provincia, prefisso_utenti, id_ambito, cod_istat
-from topo.comuni c";
+$query="select q.id_quartiere, 
+q.id_municipio, 
+q.id_comune, 
+nome as descrizione
+from topo.quartieri q";
 
 //echo $query . "<br>";
 $result = pg_prepare($conn, "my_query", $query);

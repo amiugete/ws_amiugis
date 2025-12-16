@@ -568,6 +568,75 @@ curl -X POST http://amiugis.amiu.genova.it/ws_amiugis/comuni.php
             </div>
 
 
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="dp">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne_municipi" aria-expanded="false" 
+          aria-controls="collapseOne_dp">
+          Municipi (solo per Genova)
+          </button>
+        </h2>
+          <div id="collapseOne_comuni" class="accordion-collapse collapse show" aria-labelledby="dp" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Il Webservice risponde con i dettagli dei Municipi 
+        
+          <br> <strong>Endpoint WS</strong>: <a target="ambiti" href="https://amiugis.amiu.genova.it/ws_amiugis/municipi.php"> 
+              https://amiugis.amiu.genova.it/ws_amiugis/municipi.php
+            </a>
+          
+            <br> <strong>Metodo: POST </strong>
+          Il WS risponde con un json con i dettagli dei Municipi :
+          <ul>
+            <li> id_municipio : id Municipio</li>
+            <li> id_comune : id Comune</li>
+            <li> descrizione : nome del Municipio</li>
+          </ul>   
+          
+          
+          <hr>
+          <h5>ESEMPIO:</h5>
+
+          <pre class="data-line data-language">
+            <code class="language-bash">
+curl -X POST http://amiugis.amiu.genova.it/ws_amiugis/municipi.php
+            </code>
+          </pre>
+            </div>
+
+        <div class="accordion-item">
+        <h2 class="accordion-header" id="dp">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne_quartieri" aria-expanded="false" 
+          aria-controls="collapseOne_dp">
+          Quartieri
+          </button>
+        </h2>
+          <div id="collapseOne_comuni" class="accordion-collapse collapse show" aria-labelledby="dp" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Il Webservice risponde con i dettagli dei quartieri
+        
+          <br> <strong>Endpoint WS</strong>: <a target="ambiti" href="https://amiugis.amiu.genova.it/ws_amiugis/quartieri.php"> 
+              https://amiugis.amiu.genova.it/ws_amiugis/quartieri.php
+            </a>
+          
+            <br> <strong>Metodo: POST </strong>
+          Il WS risponde con un json con i dettagli dei Comuni gestiti da AMIU :
+          <ul>
+            <li> id_quartiere : id quartiere</li>
+            <li> id_municipio: id Municipio</li>
+            <li> id_comune : id Comune</li>
+            <li> descrizione : descrizione del quartiere</li>
+          </ul>   
+          
+          
+          <hr>
+          <h5>ESEMPIO:</h5>
+
+          <pre class="data-line data-language">
+            <code class="language-bash">
+curl -X POST http://amiugis.amiu.genova.it/ws_amiugis/qartieri.php
+            </code>
+          </pre>
+            </div>
+
 
             <div class="accordion-item">
         <h2 class="accordion-header" id="dp">
@@ -609,7 +678,54 @@ curl -X POST http://amiugis.amiu.genova.it/ws_amiugis/vie.php
             </div>
           </div>
 
+<div class="accordion-item">
+        <h2 class="accordion-header" id="dp">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne_civici" aria-expanded="false" 
+          aria-controls="collapseOne_dp">
+          Civici
+          </button>
+        </h2>
+          <div id="collapseOne_civici" class="accordion-collapse collapse show" aria-labelledby="dp" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Il Webservice risponde con i dettagli delle civici (per ora solo Genova)
+        
+          <br> <strong>Endpoint WS</strong>: <a target="civici" href="https://amiugis.amiu.genova.it/ws_amiugis/civici.php"> 
+              https://amiugis.amiu.genova.it/ws_amiugis/civici.php
+            </a>
+          
+            <br> <strong>Metodo: POST </strong>
+          Il WS risponde con un json con i dettagli dei civici per ora solo di Genova:
+          <ul>
+            <li> cod_civico : id via</li>
+            <li> numero </li>
+            <li>   lettera</li>
+            <li>   colore</li> 
+            <li>   testo</li>
+             <li>  cod_strada</li>
+             <li> id_comune</li> 
+             <li>  id_municipio</li> 
+             <li>  lat</li>
+             <li>  lon</li>
+              <li> insert_date</li>
+              <li> update_date</li>
+                          
+          </ul>   
+          
+          
+          <hr>
+          <h5>ESEMPIO:</h5>
 
+          <pre class="data-line data-language">
+            <code class="language-bash">
+curl -X POST http://amiugis.amiu.genova.it/ws_amiugis/civici.php
+            </code>
+          </pre>
+            </div>
+
+
+        
+            </div>
+          </div>
       <!-- FINE IDEA -->    
       </div>
 
