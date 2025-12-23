@@ -16,11 +16,18 @@ testo,
 cod_strada,
 1 as id_comune, 
 id_municipio, 
+g.id_quartiere,
 st_y(st_transform(geoloc,4326)) as lat,
 st_x(st_transform(geoloc,4326)) as lon,
 cc.ins_date as insert_date,
 cc.mod_date as update_date 
-from etl.civici_comune cc";
+from etl.civici_comune cc
+left join lateral (
+  select id_quartiere
+  from geo.v_grafostradale g
+  order by g.geoloc <-> cc.geoloc
+  limit 1
+  ) g on true";
 
 //echo $query . "<br>";
 $result = pg_prepare($conn, "my_query", $query);

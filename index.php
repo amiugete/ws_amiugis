@@ -701,14 +701,14 @@ curl -X POST http://amiugis.amiu.genova.it/ws_amiugis/vie.php
             <li>   lettera</li>
             <li>   colore</li> 
             <li>   testo</li>
-             <li>  cod_strada</li>
-             <li> id_comune</li> 
-             <li>  id_municipio</li> 
-             <li>  lat</li>
-             <li>  lon</li>
-              <li> insert_date</li>
-              <li> update_date</li>
-                          
+            <li>  cod_strada</li>
+            <li> id_comune</li> 
+            <li>  id_municipio</li> 
+            <li>  id_quartiere</li>
+            <li>  lat</li>
+            <li>  lon</li>
+            <li> insert_date</li>
+            <li> update_date</li>              
           </ul>   
           
           
