@@ -86,6 +86,20 @@ if (!$conn_api) {
 ```
 
 
+## Indirizzi IP che accedono (tramite firewall) alla pagina pubblica
+
+63.33.155.248 # opencontent
+62.97.54.226 # Id&A
+52.211.36.245 # ID&A
+185.85.193.179 # wingsoft
+104.45.28.14 # tellus test
+20.76.154.115 # tellus produzione
+51.137.30.158 # tellus ambiente sviluppo
+193.36.110.33 # Wingsoft
+178.23.9.150 # tellus ambiente sviluppo
+
+
+
 ## Codice embedded 
 
 Si usa la libreria prism che è stata scaricata con un po' di impostazioni
