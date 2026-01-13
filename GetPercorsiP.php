@@ -91,7 +91,8 @@ use OpenApi\Annotations as OA;
  to_char((pu.data_disattivazione - interval '1' day), 'YYYYMMDD') as data_fine_validita, 
  to_char(coalesce( ep.data_ultima_modifica,'2023-07-27'), 'YYYYMMDD') as data_ultima_modifica,
  ep.versione_testata,
- ep.freq_settimane as periodicita
+ ep.freq_settimane as periodicita,
+ 0 as doppia_antenna
  from anagrafe_percorsi.elenco_percorsi ep 
  join anagrafe_percorsi.anagrafe_tipo at2 
      on (select max(id_tipo) 
