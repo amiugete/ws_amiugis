@@ -1083,6 +1083,69 @@ curl -d "last_update=20240601&page_size=200&page_n=1" -X POST http://amiugis.ami
           </div>
             <!-- FINE GetDepositi -->  
 
+
+
+            <div class="accordion-item">
+        <h2 class="accordion-header" id="GetMezziEkovision">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOneGetDepositi" aria-expanded="false" 
+          aria-controls="collapseOneGetMezziEkovision">
+          WS per recuperare i mezzi caricati su Ekovision ad una determinata data (item D)
+          </button>
+        </h2>
+          <div id="collapseOneGetMezziEkovision" class="accordion-collapse collapse show" aria-labelledby="h_GetMezziEkovision" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            Il Webservice risponde con i dettagli di utilizzo dei mezzi
+        
+          <br> <strong>Endpoint WS</strong>: <a target="mappe" href="https://amiugis.amiu.genova.it/ws_amiugis/GetMezziEkovision.php"> 
+              https://amiugis.amiu.genova.it/ws_amiugis/GetMezziEkovision.php
+            </a>
+          <br> <strong>Metodo: POST </strong>
+          <br><strong>Parametri obbligatori</strong>:
+          <ul>
+          <li> check_date: data di verifica in formato YYYYMMDD </li> 
+          </ul>
+
+          <br> <strong>Parametri opzionali</strong>:
+          <ul>
+          <li> page_size: (default 1000)</li>
+          <li> page_n: numero pagina (default 1)</li>
+          </ul>
+          Il WS risponde con l'elenco delle informazioni 
+          <ul>
+          <li>
+            id_scheda_ekovision
+          </li> 
+          <li>
+            data_esecuzione_prevista espressa in formato <i>YYYYMMDD</i>
+          </li>
+          <li>
+            orario_esecuzione espresso in formato <i>HHMMSS</i>
+          </li>
+          <li>
+            fascia_turno
+          </li>
+          <li>
+            sportello
+          </li>
+          </ul>
+          <hr>
+          <h5>ESEMPIO:</h5>
+
+          <pre class="data-line data-language">
+            <code class="language-bash">
+curl -d "check_date=20260123&page_size=200&page_n=1" -X POST http://amiugis.amiu.genova.it/ws_amiugis/GetMezziEkovision.php
+            </code>
+          </pre>
+
+          
+            </div>
+            
+                
+        
+            </div>
+          </div>
+            <!-- FINE GetMezziEkovision -->  
+
             <br>
 <a href="#intro" class="btn btn-info"> Torna all'indice </a>
 <hr>
